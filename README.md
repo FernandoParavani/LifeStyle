@@ -21,3 +21,9 @@ npm install @react-navigation/bottom-tabs
 npm install @react-navigation/stack
 
 npm install @react-navigation/native
+
+npm install @react-native-community/datetimepicker
+
+yarn add @react-native-community/datetimepicker
+
+yarn add -D @types/react-native-community__datetimepicker
