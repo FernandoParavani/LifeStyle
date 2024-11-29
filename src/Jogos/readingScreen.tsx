@@ -22,7 +22,7 @@ export default function ReadingScreen() {
         <View style={style.containerReading}>
    
             <View style={style.logoContainer}>
-                <Image source={Logo} style={style.logo} />
+                <Image source={Logo} style={style.logo}/>
             </View>
 
             

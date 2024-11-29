@@ -1,48 +1,63 @@
+import React, { useContext } from "react";
+import { ScrollView, Box, Divider } from "native-base";
+import { AppContext } from "./AppContextTelaConsultas";
+import { CardConsulta } from "../componentes/CardConsulta";
+import { Titulo } from "../componentes/Titulo";
 
-import { VStack, Divider, ScrollView } from 'native-base'
-import { Botao } from '../componentes/Botao'
-import { CardConsulta } from '../componentes/CardConsulta'
-import { Titulo } from '../componentes/Titulo'
+export default function Consultas() {
+  const { appointments } = useContext(AppContext);
 
-export default function Consultas(){
-  return(
+  // Separar as consultas futuras e passadas
+  const upcomingAppointments = appointments.filter((app) => app.isFuture);
+  const pastAppointments = appointments.filter((app) => !app.isFuture);
+
+  return (
     <ScrollView p="5">
-      <Titulo color="blue.500">Minhas consultas</Titulo>
-      <Botao mt={5} mb={5}>Agendar nova consulta</Botao>
+      <Titulo color="blue.500" fontSize="2xl" mb={4}>Minhas Consultas</Titulo>
 
-      <Titulo color="blue.500" fontSize="lg" alignSelf="flex-start" mb={2}>Próximas consultas</Titulo>
-      <CardConsulta 
-        nome='Dr. Oliveira'
-        especialidade='Psicologo'
-        foto='https://github.com/FernandoParavani.png'
-        data='20/04/2024'
-        foiAgendado
-      />
+      {/* Próximas Consultas */}
+      <Titulo color="blue.500" fontSize="lg" alignSelf="flex-start" mb={2}>
+        Próximas Consultas
+      </Titulo>
+      {upcomingAppointments.length > 0 ? (
+        upcomingAppointments.map((appointment) => (
+          <CardConsulta
+            key={appointment.id}
+            nome={appointment.professionalName}
+            especialidade={appointment.serviceName}
+            foto={appointment.professionalPhoto}
+            data={`${appointment.date} às ${appointment.time}`}
+            foiAgendado
+          />
+        ))
+      ) : (
+        <Box>
+          <Titulo fontSize="sm" color="gray.500">Nenhuma consulta agendada.</Titulo>
+        </Box>
+      )}
 
       <Divider mt={5} />
 
-      <Titulo color="blue.500" fontSize="lg" alignSelf="flex-start" mb={2}>Consultas passadas</Titulo>
-      <CardConsulta 
-        nome='Dr. Juan'
-        especialidade='Nutricionista'
-        foto='https://github.com/FernandoParavani.png'
-        data='20/04/2024'
-        foiAtendido
-      />
-      <CardConsulta 
-        nome='Dr. Fernando'
-        especialidade='Personal trainer'
-        foto='https://github.com/FernandoParavani.png'
-        data='20/04/2024'
-        foiAtendido
-      />
-      <CardConsulta 
-        nome='Dr. Paravani'
-        especialidade='Professor de Yoga'
-        foto='https://github.com/FernandoParavani.png'
-        data='20/04/2024'
-        foiAtendido
-      />
+      {/* Consultas Passadas */}
+      <Titulo color="blue.500" fontSize="lg" alignSelf="flex-start" mb={2}>
+        Consultas Passadas
+      </Titulo>
+      {pastAppointments.length > 0 ? (
+        pastAppointments.map((appointment) => (
+          <CardConsulta
+            key={appointment.id}
+            nome={appointment.professionalName}
+            especialidade={appointment.serviceName}
+            foto={appointment.professionalPhoto}
+            data={`${appointment.date} às ${appointment.time}`}
+            foiAtendido
+          />
+        ))
+      ) : (
+        <Box>
+          <Titulo fontSize="sm" color="gray.500">Nenhuma consulta realizada.</Titulo>
+        </Box>
+      )}
     </ScrollView>
-  )
+  );
 }
