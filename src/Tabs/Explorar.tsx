@@ -1,26 +1,44 @@
-import React, { useState, useContext } from "react";
-import { VStack, Box, ScrollView, Modal, Text } from "native-base";
-import { Botao } from "../componentes/Botao";
-import { CardConsulta } from "./CardConsulta";
+import React, { useState } from "react";
+import { VStack, Box, ScrollView } from "native-base";
 import { EntradaTexto } from "./EntradaTexto";
+import { Botao } from "../componentes/Botao";
+import CardConsulta from "./CardConsulta";
 import { Titulo } from "../componentes/Titulo";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { AppContext } from "./AppContext";
 
-export default function Explorar() {
-  const { addAppointment } = useContext(AppContext); // Contexto para salvar consultas
+export default function Explorar({ navigation }: { navigation: any }) {
   const [specialty, setSpecialty] = useState("");
   const [location, setLocation] = useState("");
   const [services, setServices] = useState([
-    { id: 1, nome: "Dr. Juan", especialidade: "Psicólogo", foto: "https://github.com/FernandoParavani.png" },
-    { id: 2, nome: "Dr. Silva", especialidade: "Dentista", foto: "https://github.com/FernandoParavani.png" },
-    { id: 3, nome: "Dr. Oliveira", especialidade: "Cardiologista", foto: "https://github.com/FernandoParavani.png" },
+    {
+      id: 1,
+      nome: "Dr. Juan",
+      especialidade: "Psicólogo",
+      descricao: "Especialista em terapia cognitivo-comportamental.",
+      localizacao: "São Paulo - SP",
+      avaliacao: 4.8,
+      foto: "https://github.com/FernandoParavani.png",
+    },
+    {
+      id: 2,
+      nome: "Dr. Silva",
+      especialidade: "Dentista",
+      descricao: "Experiência em odontologia estética e implantes dentários.",
+      localizacao: "Rio de Janeiro - RJ",
+      avaliacao: 4.7,
+      foto: "https://github.com/FernandoParavani.png",
+    },
+    {
+      id: 3,
+      nome: "Dr. Oliveira",
+      especialidade: "Cardiologista",
+      descricao: "Atua no diagnóstico e tratamento de doenças cardiovasculares.",
+      localizacao: "Belo Horizonte - MG",
+      avaliacao: 4.9,
+      foto: "https://github.com/FernandoParavani.png",
+    },
   ]);
-  const [filteredServices, setFilteredServices] = useState(services); // Serviços filtrados
-  const [selectedService, setSelectedService] = useState(null);
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const [filteredServices, setFilteredServices] = useState(services);
 
   // Filtrar serviços pela especialidade
   const handleSearch = () => {
@@ -30,16 +48,9 @@ export default function Explorar() {
     setFilteredServices(filtered);
   };
 
-  // Função para agendar consulta
-  const handleSchedule = () => {
-    if (selectedService) {
-      addAppointment({
-        serviceName: `${selectedService.nome} - ${selectedService.especialidade}`,
-        date: selectedDate.toLocaleDateString(),
-      });
-      setModalVisible(false);
-      alert(`Consulta agendada com ${selectedService.nome} em ${selectedDate.toLocaleDateString()}`);
-    }
+  // Navegar para a tela de perfil
+  const handleNavigateToProfile = (service: any) => {
+    navigation.navigate("PerfilParceiro", { service });
   };
 
   return (
@@ -67,127 +78,26 @@ export default function Explorar() {
           Resultado da Busca
         </Titulo>
         {filteredServices.map((service) => (
-          <VStack flex={1} mt={5}  w="100%" alignItems="flex-start" bgColor="white" key={service.id}>
+          <VStack
+            flex={1}
+            mt={5}
+            w="100%"
+            alignItems="flex-start"
+            bgColor="white"
+            key={service.id}
+          >
             <CardConsulta
               especialidade={service.especialidade}
               foto={service.foto}
               nome={service.nome}
-              onPress={() => {
-                setSelectedService(service);
-                setModalVisible(true);
-              }}
+              localizacao={service.localizacao}
+              avaliacao={service.avaliacao}
+              descricao={service.descricao}
+              onPress={() => handleNavigateToProfile(service)}
             />
           </VStack>
         ))}
       </VStack>
-
-      {/* Modal para seleção de data */}
-      <Modal isOpen={isModalVisible} onClose={() => setModalVisible(false)} avoidKeyboard>
-  <VStack
-    bg="white"
-    p={6}
-    borderRadius="lg"
-    width="90%"
-    alignSelf="center"
-    shadow={2}
-    alignItems="center"
-  >
-    {/* Título do Modal */}
-    <Text fontSize="lg" fontWeight="bold" mb={4}>
-      Agendar Consulta
-    </Text>
-
-    {/* Campo de Nome */}
-    <EntradaTexto
-      placeholder="Nome do Profissional"
-      value={selectedService?.nome || ""}
-      editable={false} // Campo somente leitura
-      style={{
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 8,
-        padding: 8,
-        width: "100%",
-        marginBottom: 16,
-      }}
-    />
-
-    {/* Campo de Especialidade */}
-    <EntradaTexto
-      placeholder="Especialidade"
-      value={selectedService?.especialidade || ""}
-      editable={false} // Campo somente leitura
-      style={{
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 8,
-        padding: 8,
-        width: "100%",
-        marginBottom: 16,
-      }}
-    />
-
-    {/* Campo de Seleção de Data */}
-    <EntradaTexto
-      placeholder="Selecione a Data"
-      value={selectedDate.toLocaleDateString()}
-      editable={false} // Campo somente leitura
-      style={{
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 8,
-        padding: 8,
-        width: "100%",
-        marginBottom: 16,
-        textAlign: "center",
-      }}
-    />
-    <Botao
-      onPress={() => setShowDatePicker(true)}
-      mb={3}
-      bg="blue.500"
-      _text={{ color: "white" }}
-    >
-      Selecionar Data
-    </Botao>
-    {showDatePicker && (
-      <DateTimePicker
-        value={selectedDate}
-        mode="date"
-        display="default"
-        onChange={(event, date) => {
-          setShowDatePicker(false);
-          if (date) setSelectedDate(date);
-        }}
-      />
-    )}
-
-    {/* Botões Salvar e Cancelar */}
-    <VStack space={3} w="100%" alignItems="center">
-      <Botao
-        onPress={handleSchedule}
-        bg="blue.500"
-        _text={{ color: "white" }}
-        w="80%"
-        style={{ borderRadius: 8, paddingVertical: 10 }}
-      >
-        Salvar
-      </Botao>
-      <Botao
-        onPress={() => setModalVisible(false)}
-        bg="red.500"
-        _text={{ color: "white" }}
-        w="80%"
-        style={{ borderRadius: 8, paddingVertical: 10 }}
-      >
-        Cancelar
-      </Botao>
-    </VStack>
-  </VStack>
-</Modal>
-
-
-
     </ScrollView>
   );
 }

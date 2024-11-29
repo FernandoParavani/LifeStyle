@@ -5,13 +5,19 @@ interface CardConsultaProps {
   nome: string;
   especialidade: string;
   foto: string;
-  onPress: () => void; // Evento ao clicar no botão de agendamento
+  localizacao: string; // Localização do profissional
+  avaliacao: number; // Avaliação do profissional
+  descricao: string; // Descrição do profissional
+  onPress: () => void; // Evento ao clicar no botão de navegação
 }
 
-export const CardConsulta: React.FC<CardConsultaProps> = ({
+const CardConsulta: React.FC<CardConsultaProps> = ({
   nome,
   especialidade,
   foto,
+  localizacao,
+  avaliacao,
+  descricao,
   onPress,
 }) => {
   return (
@@ -35,13 +41,22 @@ export const CardConsulta: React.FC<CardConsultaProps> = ({
           <Text fontSize="sm" color="gray.500">
             {especialidade}
           </Text>
+          <Text fontSize="xs" color="gray.400">
+            {localizacao}
+          </Text>
+          <Text fontSize="xs" color="yellow.500">
+            ⭐ {avaliacao.toFixed(1)}
+          </Text>
         </VStack>
       </HStack>
 
-      {/* Botão de Agendamento */}
+      {/* Botão para ir ao perfil */}
       <Button onPress={onPress} colorScheme="blue">
-        Agendar
+        Ver Perfil
       </Button>
     </HStack>
   );
+  
 };
+
+export default CardConsulta;

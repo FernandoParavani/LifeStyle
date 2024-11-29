@@ -8,24 +8,22 @@ export const style = StyleSheet.create({
         flex: 1,
         padding: 20,
         backgroundColor: themas.colors.primary,
-        justifyContent: 'center', 
-        alignItems: 'center',
     },
     backgroundLogo: {
         position: 'absolute',
         width: width * 0.7, 
-        height: width * 0.7, 
-        top: (height - width * 0.7) / 2, 
-        left: (width - width * 0.7) / 2, 
-        opacity: 0.1, 
-        zIndex: 0, 
+        height: width * 0.7,
+        top: height * 0.25, // Mantém o logo centralizado no eixo vertical
+        left: (width - width * 0.7) / 2,
+        opacity: 0.1,
+        zIndex: -1, // Coloca o logo atrás do conteúdo
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
         textAlign: 'center',
-        zIndex: 1, 
+        color: themas.colors.secondary, // Certifique-se de que contrasta com o fundo
     },
     taskContainer: {
         flexDirection: 'row',
@@ -33,75 +31,66 @@ export const style = StyleSheet.create({
         paddingVertical: 10,
         borderBottomWidth: 1,
         borderBottomColor: themas.colors.secondary,
-        zIndex: 1,
     },
     checkbox: {
         marginRight: 10,
-        zIndex: 1,
     },
     taskTitle: {
         fontSize: 18,
         flex: 1,
-        zIndex: 1,
+        color: themas.colors.text, // Certifique-se de usar uma cor visível
     },
     completedText: {
         textDecorationLine: 'line-through',
-        color: themas.colors.secondary,
-        zIndex: 1,
+        color: '#757575', // Cor cinza para tarefas concluídas
     },
     buttonsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 20,
         paddingBottom: 10,
-        zIndex: 1,
     },
     clearButton: {
         backgroundColor: '#C4C4C4',
-        padding: 10,
-        borderRadius: 5,
+        padding: 12,
+        borderRadius: 8,
         flex: 1,
         marginRight: 5,
-        zIndex: 1,
+        alignItems: 'center',
     },
     clearButtonText: {
         color: '#FFF',
         fontWeight: 'bold',
-        textAlign: 'center',
     },
     addButton: {
-        backgroundColor: '#0B3B60', 
-        padding: 10,
-        borderRadius: 5,
+        backgroundColor: '#0B3B60',
+        padding: 12,
+        borderRadius: 8,
         flex: 1,
         marginLeft: 5,
-        zIndex: 1,
+        alignItems: 'center',
     },
     saveButtonText: {
         color: '#FFF',
         fontWeight: 'bold',
-        textAlign: 'center',
     },
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0,0,0,0.5)',
-        zIndex: 1,
     },
     modalContent: {
-        width: 300,
+        width: '90%',
         padding: 20,
         backgroundColor: '#FFF',
         borderRadius: 10,
-        zIndex: 1,
     },
     modalTitle: {
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 15,
         textAlign: 'center',
-        zIndex: 1,
     },
     modalInput: {
         borderWidth: 1,
@@ -109,18 +98,16 @@ export const style = StyleSheet.create({
         padding: 10,
         marginBottom: 15,
         borderRadius: 5,
-        zIndex: 1,
+        color: '#000', // Certifique-se de que o texto do input seja visível
     },
     modalButtons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        zIndex: 1,
     },
     emptyMessage: {
         textAlign: 'center',
         fontSize: 16,
         color: '#757575',
         marginTop: 20,
-        zIndex: 1,
     },
 });
