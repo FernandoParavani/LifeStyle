@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { VStack, Text, Image, Box, Button, HStack, Icon, Select, CheckIcon } from "native-base";
+import { VStack, Text, Box, Button, HStack, Icon, Select, CheckIcon, Image } from "native-base";
 import { Linking } from "react-native";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -54,7 +54,17 @@ export default function PerfilParceiro({ route, navigation }: { route: any; navi
 
   return (
     <VStack flex={1} bgColor="white" alignItems="center" space={3} px={3} py={3}>
-      <Image source={{ uri: service.foto }} alt="Foto do Profissional" size="2xl" borderRadius={100} />
+      {/* Ajuste na exibição da imagem para aceitar imagens locais */}
+      <Image
+        source={service.foto}
+        alt="Foto do Profissional"
+        style={{
+          width: 120,
+          height: 120,
+          borderRadius: 60, // Tornar a imagem circular
+        }}
+        mb={3}
+      />
       <Text fontSize="lg" fontWeight="bold">{service.nome}</Text>
       <Text fontSize="sm" color="gray.500">{service.especialidade}</Text>
       <Text fontSize="sm" color="gray.600" textAlign="center" lineHeight="18px">{service.descricao}</Text>

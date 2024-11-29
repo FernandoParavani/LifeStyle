@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Animated, Easing, Image } from 'react-native';
 import { style } from '../components/Input/stylesRelaxScreen'; 
-import Logo from '../assets/Logo.png'; 
+import Logo from '../assets/Logo.png'; // Verifique o caminho correto
+
 export default function RelaxationScreen() {
   const [step, setStep] = useState("Inspire");
   const [animationValue] = useState(new Animated.Value(1));
@@ -26,7 +27,7 @@ export default function RelaxationScreen() {
           duration: 4000,
           easing: Easing.ease,
           useNativeDriver: true,
-        })
+        }),
       ])
     ).start();
 
@@ -35,22 +36,26 @@ export default function RelaxationScreen() {
 
   return (
     <View style={[style.containerRelax, { backgroundColor: 'white' }]}>
-      
-      
+      {/* Logotipo */}
       <View style={style.logoContainer}>
-        <Image source={Logo} style={style.logo} />
+        <Image
+          source={Logo}
+          style={style.logo}
+          onError={(error) => console.log("Image Load Error:", error.nativeEvent)}
+        />
       </View>
 
-     
+      {/* Título */}
       <Text style={style.textTitle}>Momento para se acalmar!</Text>
 
+      {/* Círculo animado */}
       <View style={style.circleContainer}>
         <Animated.View
           style={[
             style.circle,
             {
               transform: [{ scale: animationValue }],
-              backgroundColor: '0B3B60', 
+              backgroundColor: '#0B3B60', // Corrigido para cor válida
             },
           ]}
         />

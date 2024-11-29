@@ -1,6 +1,6 @@
-import React, { createContext, useState, ReactNode } from "react";
+import React, { createContext, useState, useEffect, ReactNode } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Estrutura dos dados de agendamento
 interface Appointment {
   id: string;
   serviceName: string;
@@ -11,19 +11,16 @@ interface Appointment {
   isFuture: boolean;
 }
 
-// Estrutura do contexto
 interface AppContextProps {
   appointments: Appointment[];
   addAppointment: (appointment: Appointment) => void;
 }
 
-// Criação do contexto
 export const AppContext = createContext<AppContextProps>({
   appointments: [],
   addAppointment: () => {},
 });
 
-// Provedor do contexto
 interface AppProviderProps {
   children: ReactNode;
 }
@@ -31,8 +28,36 @@ interface AppProviderProps {
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
 
-  const addAppointment = (appointment: Appointment) => {
-    setAppointments((prev) => [...prev, appointment]);
+  useEffect(() => {
+    loadAppointments();
+  }, []);
+
+  const loadAppointments = async () => {
+    try {
+      const storedAppointments = await AsyncStorage.getItem("appointments");
+      if (storedAppointments) {
+        const parsedAppointments = JSON.parse(storedAppointments);
+        setAppointments(parsedAppointments);
+        console.log("Agendamentos carregados:", parsedAppointments); // Verifica o carregamento
+        
+      }
+    } catch (error) {
+      console.error("Erro ao carregar os agendamentos:", error);
+    }
+  };
+
+  const addAppointment = async (appointment: Appointment) => {
+    try {
+      const updatedAppointments = [...appointments, appointment];
+      setAppointments(updatedAppointments);
+      await AsyncStorage.setItem(
+        "appointments",
+        JSON.stringify(updatedAppointments)
+      );
+      console.log("Agendamento salvo:", updatedAppointments); // Verifica o salvamento
+    } catch (error) {
+      console.error("Erro ao salvar o agendamento:", error);
+    }
   };
 
   return (
@@ -41,3 +66,5 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     </AppContext.Provider>
   );
 };
+
+

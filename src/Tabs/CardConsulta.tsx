@@ -1,10 +1,10 @@
 import React from "react";
-import { VStack, Text, HStack, Avatar, Button } from "native-base";
+import { VStack, Text, HStack, Image, Button } from "native-base";
 
 interface CardConsultaProps {
   nome: string;
   especialidade: string;
-  foto: string;
+  foto: any; // Alterado para aceitar imagens locais
   localizacao: string; // Localização do profissional
   avaliacao: number; // Avaliação do profissional
   descricao: string; // Descrição do profissional
@@ -33,7 +33,16 @@ const CardConsulta: React.FC<CardConsultaProps> = ({
     >
       {/* Foto e detalhes do serviço */}
       <HStack alignItems="center">
-        <Avatar source={{ uri: foto }} size="md" />
+        {/* Foto ajustada para aceitar imagens locais */}
+        <Image
+          source={foto}
+          alt={`Foto de ${nome}`}
+          style={{
+            width: 60,
+            height: 60,
+            borderRadius: 30, // Tornar a imagem circular
+          }}
+        />
         <VStack ml={3}>
           <Text fontSize="md" fontWeight="bold" color="gray.700">
             {nome}
@@ -56,7 +65,6 @@ const CardConsulta: React.FC<CardConsultaProps> = ({
       </Button>
     </HStack>
   );
-  
 };
 
 export default CardConsulta;

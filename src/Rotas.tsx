@@ -8,7 +8,9 @@ import Checklist from "./Jogos/checklistScreen";
 import ReadingScreen from "./Jogos/readingScreen";
 import BreathingExercise from "./Jogos/relaxScreen";
 import RelaxationScreen from "./Jogos/relaxScreen";
+import ChatbotSreen from "./Jogos/ChatbotScreen"
 import RecuperarSenha from "./RecuperarSenha"; // Adicionado import para a tela de recuperação de senha
+import ChatbotScreen from "./Jogos/ChatbotScreen";
 
 const Tab = createNativeStackNavigator();
 const Stack = createNativeStackNavigator();
@@ -40,6 +42,7 @@ export default function Rotas() {
                 <Stack.Screen name="ChecklistScreen" component={Checklist} />
                 <Stack.Screen name="RelaxationScreen" component={RelaxationScreen} />
                 <Stack.Screen name="ReadingScreen" component={ReadingScreen} />
+                <Stack.Screen name="ChatbotScreen" component={ChatbotScreen} />
             </Tab.Navigator>
         </NavigationContainer>
     );
