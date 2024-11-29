@@ -1,6 +1,18 @@
 import React, { useState } from "react";
-import { VStack, Image, Box, Button, Text, useToast } from "native-base";
-import { TouchableOpacity } from "react-native";
+import {
+  VStack,
+  Image,
+  Box,
+  Button,
+  Text,
+  useToast,
+} from "native-base";
+import {
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from "react-native";
 import Logo from "./assets/Logo.png";
 import { EntradaTexto } from "./componentes/EntradaTexto";
 
@@ -38,58 +50,78 @@ export default function Login({ navigation }: { navigation: any }) {
   };
 
   return (
-    <VStack flex={1} alignItems="center" justifyContent="center" px={5} bg="white">
-      {/* Imagem de Logo */}
-      <Image source={Logo} alt="Logo LifeStyle" mb={5} size="2xl" resizeMode="contain" />
-
-      {/* Título */}
-      <Text fontSize="xl" fontWeight="bold" mb={5}>
-        Faça o login em sua conta
-      </Text>
-
-      {/* Campos de entrada */}
-      <Box w="100%" mb={5}>
-        <EntradaTexto
-          label="Email"
-          placeholder="Insira seu endereço de e-mail"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <EntradaTexto
-          label="Senha"
-          placeholder="Insira sua senha"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-      </Box>
-
-      {/* Botão de login */}
-      <Button
-        onPress={handleLogin}
-        w="100%"
-        bg="blue.500"
-        _text={{ color: "white" }}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined} // Ajusta para iOS e Android
+      keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 0} // Offset adicional para o teclado
+    >
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled" // Permite que o teclado seja fechado ao tocar fora
       >
-        Entrar
-      </Button>
+        <VStack flex={1} alignItems="center" justifyContent="center" px={5} bg="white">
+          {/* Imagem de Logo */}
+          <Image
+            source={Logo}
+            alt="Logo LifeStyle"
+            mb={5}
+            size="2xl"
+            resizeMode="contain"
+          />
 
-      {/* Link para recuperação de senha */}
-      <TouchableOpacity onPress={() => navigation.navigate("RecuperarSenha")} style={{ marginTop: 10 }}>
-        <Text color="blue.500" underline>
-          Esqueceu sua senha?
-        </Text>
-      </TouchableOpacity>
-
-      {/* Link para cadastro */}
-      <Box flexDirection="row" mt={5}>
-        <Text>Não tem uma conta? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
-          <Text color="blue.500" underline>
-            Cadastre-se!
+          {/* Título */}
+          <Text fontSize="xl" fontWeight="bold" mb={5}>
+            Faça o login em sua conta
           </Text>
-        </TouchableOpacity>
-      </Box>
-    </VStack>
+
+          {/* Campos de entrada */}
+          <Box w="100%" mb={5}>
+            <EntradaTexto
+              label="Email"
+              placeholder="Insira seu endereço de e-mail"
+              value={email}
+              onChangeText={setEmail}
+            />
+            <EntradaTexto
+              label="Senha"
+              placeholder="Insira sua senha"
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+            />
+          </Box>
+
+          {/* Botão de login */}
+          <Button
+            onPress={handleLogin}
+            w="100%"
+            bg="blue.500"
+            _text={{ color: "white" }}
+          >
+            Entrar
+          </Button>
+
+          {/* Link para recuperação de senha */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate("RecuperarSenha")}
+            style={{ marginTop: 10 }}
+          >
+            <Text color="blue.500" underline>
+              Esqueceu sua senha?
+            </Text>
+          </TouchableOpacity>
+
+          {/* Link para cadastro */}
+          <Box flexDirection="row" mt={5}>
+            <Text>Não tem uma conta? </Text>
+            <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
+              <Text color="blue.500" underline>
+                Cadastre-se!
+              </Text>
+            </TouchableOpacity>
+          </Box>
+        </VStack>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

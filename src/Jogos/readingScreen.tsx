@@ -5,11 +5,11 @@ import Logo from '../assets/Logo.png';
 
 export default function ReadingScreen() {
     const resources = [
-        { id: '1', title: 'Introdução ao JavaScript', link: 'https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Guide/Introduction' },
-        { id: '2', title: 'React Native Documentation', link: 'https://reactnative.dev/docs/getting-started' },
-        { id: '3', title: 'Clean Code - Livro', link: 'https://www.devmedia.com.br/livro-clean-code/18588' },
-        { id: '4', title: 'Estruturas de Dados e Algoritmos', link: 'https://www.ime.usp.br/~pf/algoritmos/' },
-        { id: '5', title: 'Python para Iniciantes', link: 'https://python.org.br/introducao/' }
+        { id: '1', title: 'Educação Física e qualidade de vida', link: 'https://www.scielo.br/j/sausoc/a/N9HvQRc6CfvzkG6XnCyvCNg/?utm_source=chatgpt.com' },
+        { id: '2', title: 'Mindfulness na Educação', link: 'https://www.scielosp.org/pdf/icse/2020.v24/e200015/pt?utm_source=chatgpt.com' },
+        { id: '3', title: 'Benefícios do exercício físico para a saúde mental', link: 'https://www.scielo.br/j/csc/a/T57NLtQCjwKmBXYyvWVW5qq/?utm_source=chatgpt.com' },
+        { id: '4', title: 'Os 7 segredos para uma vida organizada', link: 'https://loopdesucesso.com/organizacao-pessoal/?utm_source=chatgpt.com' },
+        { id: '5', title: 'Entenda o que é a procrastinação', link: 'https://etalent.com.br/artigos/autoconhecimento/procrastinacao/?utm_source=chatgpt.com' }
     ];
 
     const renderItem = ({ item }: any) => (

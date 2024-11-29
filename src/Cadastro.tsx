@@ -1,5 +1,19 @@
-import { VStack, Image, Text, Box, Checkbox, ScrollView, Button } from "native-base";
-import { useState } from "react";
+import React, { useState } from "react";
+import {
+  VStack,
+  Image,
+  Text,
+  Box,
+  Checkbox,
+  ScrollView,
+  Button,
+} from "native-base";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { Titulo } from "./componentes/Titulo";
 import { EntradaTexto } from "./componentes/EntradaTexto";
 import { secoes } from "./utils/CadastroEntradaTexto";
@@ -37,8 +51,25 @@ export default function Cadastro({ navigation }: { navigation: any }) {
     }
   };
 
+  // Formata o valor do campo com base na necessidade
   const handleChange = (field: string, value: string) => {
-    setFormData({ ...formData, [field]: value });
+    let formattedValue = value;
+
+    if (field === "CEP") {
+      formattedValue = value
+        .replace(/\D/g, "")
+        .replace(/(\d{5})(\d{1,3})/, "$1-$2")
+        .substring(0, 9);
+    } else if (field === "Telefone") {
+      formattedValue = value
+        .replace(/\D/g, "")
+        .replace(/^(\d{2})(\d{4,5})(\d{4})$/, "($1) $2-$3")
+        .substring(0, 15);
+    } else if (field === "Endereço" || field === "Nome") {
+      formattedValue = value.charAt(0).toUpperCase() + value.slice(1); // Converte a primeira letra para maiúscula
+    }
+
+    setFormData({ ...formData, [field]: formattedValue });
   };
 
   const toggleGoal = (goal: string) => {
@@ -50,66 +81,82 @@ export default function Cadastro({ navigation }: { navigation: any }) {
   };
 
   return (
-    <ScrollView style={{ flex: 1, padding: 20, backgroundColor: "white" }}>
-      {/* Logo: Ajustado com margin top */}
-      <Image
-        source={Logo}
-        alt="Logo LifeStyle"
-        alignSelf="center"
-        size="lg"
-        mb={5} // Mantém um espaçamento abaixo
-        mt={10} // Adiciona espaçamento acima para centralizar melhor
-      />
-
-      {/* Título da seção */}
-      <Titulo fontSize="xl" mb={4}>
-        {secoes[numSecao].titulo}
-      </Titulo>
-
-      {/* Campos de entrada */}
-      <Box mb={5}>
-        {secoes[numSecao]?.entradaTexto?.map((entrada) => (
-          <EntradaTexto
-            key={entrada.id}
-            label={entrada.label}
-            placeholder={entrada.placeholder}
-            secureTextEntry={entrada.secureTextEntry}
-            value={formData[entrada.label] || ""}
-            onChangeText={(value) => handleChange(entrada.label, value)}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView
+          style={{ flex: 1, padding: 20, backgroundColor: "white" }}
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* Logo */}
+          <Image
+            source={Logo}
+            alt="Logo LifeStyle"
+            alignSelf="center"
+            size="lg"
+            mb={5}
+            mt={10}
           />
-        ))}
-      </Box>
 
-      {/* Checkboxes (Objetivos na última seção) */}
-      {numSecao === 2 && (
-        <Box>
-          <Text fontWeight="bold" mb={3}>
-            Selecione seus objetivos:
-          </Text>
-          {secoes[numSecao]?.checkbox?.map((option) => (
-            <Checkbox
-              key={option.id}
-              value={option.value}
-              isChecked={selectedGoals.includes(option.value)}
-              onChange={() => toggleGoal(option.value)}
-            >
-              {option.value}
-            </Checkbox>
-          ))}
-        </Box>
-      )}
+          {/* Título da seção */}
+          <Titulo fontSize="xl" mb={4}>
+            {secoes[numSecao].titulo}
+          </Titulo>
 
-      {/* Botões de navegação */}
-      <VStack space={3} mt={5}>
-        {numSecao > 0 && (
-          <Button onPress={voltarSecao} bg="gray.500" _text={{ color: "white" }}>
-            Voltar
-          </Button>
-        )}
-        <Button onPress={avancarSecao} bg="blue.500" _text={{ color: "white" }}>
-          {numSecao < secoes.length - 1 ? "Avançar" : "Concluir"}
-        </Button>
-      </VStack>
-    </ScrollView>
+          {/* Campos de entrada */}
+          <Box mb={5}>
+            {secoes[numSecao]?.entradaTexto?.map((entrada) => (
+              <EntradaTexto
+                key={entrada.id}
+                label={entrada.label}
+                placeholder={entrada.placeholder}
+                secureTextEntry={entrada.secureTextEntry}
+                keyboardType={
+                  entrada.label === "CEP" || entrada.label === "Telefone"
+                    ? "numeric"
+                    : "default"
+                }
+                value={formData[entrada.label] || ""}
+                onChangeText={(value) => handleChange(entrada.label, value)}
+              />
+            ))}
+          </Box>
+
+          {/* Checkboxes (Objetivos na última seção) */}
+          {numSecao === 2 && (
+            <Box>
+              <Text fontWeight="bold" mb={3}>
+                Selecione seus objetivos:
+              </Text>
+              {secoes[numSecao]?.checkbox?.map((option) => (
+                <Checkbox
+                  key={option.id}
+                  value={option.value}
+                  isChecked={selectedGoals.includes(option.value)}
+                  onChange={() => toggleGoal(option.value)}
+                >
+                  {option.value}
+                </Checkbox>
+              ))}
+            </Box>
+          )}
+
+          {/* Botões de navegação */}
+          <VStack space={3} mt={5}>
+            {numSecao > 0 && (
+              <Button onPress={voltarSecao} bg="gray.500" _text={{ color: "white" }}>
+                Voltar
+              </Button>
+            )}
+            <Button onPress={avancarSecao} bg="blue.500" _text={{ color: "white" }}>
+              {numSecao < secoes.length - 1 ? "Avançar" : "Concluir"}
+            </Button>
+          </VStack>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
