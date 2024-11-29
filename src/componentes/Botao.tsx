@@ -16,8 +16,8 @@ export function Botao({ children, autoSize = false, color, ...rest }: ButtonProp
       mt={5}
       borderRadius="lg"
       _text={{ color: 'white' }}
-      {...rest}
-    >
+      {...rest}>
+        
       {children}
     </Button>
   );

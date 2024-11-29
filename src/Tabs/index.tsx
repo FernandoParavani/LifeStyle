@@ -7,6 +7,7 @@ import Perfil from "./Perfil";
 import Explorar from "./Explorar";
 import PerfilParceiro from "./PerfilParceiro"; // Import da tela PerfilParceiro
 
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 

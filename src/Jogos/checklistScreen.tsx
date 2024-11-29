@@ -59,13 +59,11 @@ export default function Checklist() {
                         {/* Checkbox */}
                         <TouchableOpacity
                             onPress={() => toggleTaskCompletion(item.id)}
-                            style={style.checkbox}
-                        >
+                            style={style.checkbox}>
                             <MaterialIcons
                                 name={item.completed ? 'check-box' : 'check-box-outline-blank'}
                                 size={24}
-                                color={item.completed ? '#4CAF50' : '#757575'}
-                            />
+                                color={item.completed ? '#4CAF50' : '#757575'}/>
                         </TouchableOpacity>
                         {/* Título da tarefa */}
                         <Text style={[style.taskTitle, item.completed && style.completedText]}>
@@ -98,13 +96,11 @@ export default function Checklist() {
                             value={newTask}
                             onChangeText={setNewTask}
                             placeholder="Digite a tarefa"
-                            placeholderTextColor="#aaa"
-                        />
+                            placeholderTextColor="#aaa"/>
                         <View style={style.modalButtons}>
                             <TouchableOpacity
                                 style={style.clearButton}
-                                onPress={() => setModalVisible(false)}
-                            >
+                                onPress={() => setModalVisible(false)}>
                                 <Text style={style.clearButtonText}>Cancelar</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={style.addButton} onPress={addTask}>
