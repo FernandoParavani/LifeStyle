@@ -1,59 +1,115 @@
-import { VStack,Image, Text, Box, Link, Checkbox, ScrollView } from "native-base"
-import Logo from './assets/Logo.png';
-import { TouchableOpacity } from "react-native";
+import { VStack, Image, Text, Box, Checkbox, ScrollView, Button } from "native-base";
+import { useState } from "react";
 import { Titulo } from "./componentes/Titulo";
 import { EntradaTexto } from "./componentes/EntradaTexto";
-import { Botao } from "./componentes/Botao";
-import { useState } from "react";
 import { secoes } from "./utils/CadastroEntradaTexto";
+import Logo from "./assets/Logo.png";
 
-export default function Cadastro() {
-    const [numSecao, setNumSecao] = useState(0)
-    
+export default function Cadastro({ navigation }: { navigation: any }) {
+  const [numSecao, setNumSecao] = useState(0); // Controla a seção atual
+  const [formData, setFormData] = useState<Record<string, string>>({}); // Armazena os dados do formulário
+  const [selectedGoals, setSelectedGoals] = useState<string[]>([]); // Armazena os objetivos selecionados
 
-    function avancarSecao(){
-        if(numSecao < secoes.length - 1){
-            setNumSecao(numSecao+1)
-         }
+  const avancarSecao = () => {
+    if (numSecao === 0) {
+      if (!formData["Nome"] || !formData["Email"] || !formData["Crie uma senha"]) {
+        alert("Por favor, preencha os campos Nome, Email e Senha.");
+        return;
+      }
+    } else if (numSecao === 1) {
+      if (!formData["CEP"] || !formData["Endereço"] || !formData["Número"] || !formData["Telefone"]) {
+        alert("Por favor, preencha todos os campos obrigatórios (CEP, Endereço, Número e Telefone).");
+        return;
+      }
     }
 
-    function voltarSecao(){
-        if(numSecao > 0){
-            setNumSecao(numSecao -1)
-         }
+    if (numSecao < secoes.length - 1) {
+      setNumSecao(numSecao + 1);
+    } else {
+      alert("Cadastro concluído! Enviaremos um e-mail de confirmação.");
+      navigation.navigate("Login");
     }
+  };
 
-    return (
-        <ScrollView flex={1} p={20}>
-            <Image source={Logo} alt="Logo LifeStyle"
-            alignSelf="center"/>
+  const voltarSecao = () => {
+    if (numSecao > 0) {
+      setNumSecao(numSecao - 1);
+    }
+  };
 
-            <Titulo>
-                {secoes[numSecao].titulo}
-            </Titulo>
-            <Box>
-                <Text color="blue.800" fontWeight="bold" fontSize="md" mt="2" mb={2}>
-                    Selecione o plano:
-                </Text>
-               {
-                secoes[numSecao]?.entradaTexto?.map(entrada => {
-                    return <EntradaTexto label={entrada.label} placeholder={entrada.placeholder} key={entrada.id}/>
-                })
-               }
-            </Box>
-            <Box>
-               {
-                secoes[numSecao].checkbox.map(Checkbox => {
-                    return <Checkbox key={Checkbox.id}
-                    value={Checkbox.value}>
-                        {Checkbox.value}
-                    </Checkbox>
-                
-                })
-               }
-            </Box>
-            {numSecao > 0 && <Botao onPress={() => voltarSecao()} bgColor="gray.400">Voltar</Botao>}
-            <Botao onPress={() => avancarSecao()} mt={5} mb={20}>Avançar</Botao>
-        </ScrollView>
-    );
+  const handleChange = (field: string, value: string) => {
+    setFormData({ ...formData, [field]: value });
+  };
+
+  const toggleGoal = (goal: string) => {
+    if (selectedGoals.includes(goal)) {
+      setSelectedGoals(selectedGoals.filter((item) => item !== goal));
+    } else {
+      setSelectedGoals([...selectedGoals, goal]);
+    }
+  };
+
+  return (
+    <ScrollView style={{ flex: 1, padding: 20, backgroundColor: "white" }}>
+      {/* Logo: Ajustado com margin top */}
+      <Image
+        source={Logo}
+        alt="Logo LifeStyle"
+        alignSelf="center"
+        size="lg"
+        mb={5} // Mantém um espaçamento abaixo
+        mt={10} // Adiciona espaçamento acima para centralizar melhor
+      />
+
+      {/* Título da seção */}
+      <Titulo fontSize="xl" mb={4}>
+        {secoes[numSecao].titulo}
+      </Titulo>
+
+      {/* Campos de entrada */}
+      <Box mb={5}>
+        {secoes[numSecao]?.entradaTexto?.map((entrada) => (
+          <EntradaTexto
+            key={entrada.id}
+            label={entrada.label}
+            placeholder={entrada.placeholder}
+            secureTextEntry={entrada.secureTextEntry}
+            value={formData[entrada.label] || ""}
+            onChangeText={(value) => handleChange(entrada.label, value)}
+          />
+        ))}
+      </Box>
+
+      {/* Checkboxes (Objetivos na última seção) */}
+      {numSecao === 2 && (
+        <Box>
+          <Text fontWeight="bold" mb={3}>
+            Selecione seus objetivos:
+          </Text>
+          {secoes[numSecao]?.checkbox?.map((option) => (
+            <Checkbox
+              key={option.id}
+              value={option.value}
+              isChecked={selectedGoals.includes(option.value)}
+              onChange={() => toggleGoal(option.value)}
+            >
+              {option.value}
+            </Checkbox>
+          ))}
+        </Box>
+      )}
+
+      {/* Botões de navegação */}
+      <VStack space={3} mt={5}>
+        {numSecao > 0 && (
+          <Button onPress={voltarSecao} bg="gray.500" _text={{ color: "white" }}>
+            Voltar
+          </Button>
+        )}
+        <Button onPress={avancarSecao} bg="blue.500" _text={{ color: "white" }}>
+          {numSecao < secoes.length - 1 ? "Avançar" : "Concluir"}
+        </Button>
+      </VStack>
+    </ScrollView>
+  );
 }

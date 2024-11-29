@@ -119,13 +119,13 @@ const UserProfileScreen: React.FC = () => {
             </VStack>
           </Modal>
 
-          {/* Histórico de Exames */}
+          {/* Histórico de Consultas */}
           <Box bg="white" p={4} shadow={2} borderRadius="md" w="100%">
             <Text fontSize="lg" color="blue.500" fontWeight="bold">
               Histórico de Exames
             </Text>
-            <Text>- Exame de Sangue: 01/01/2024</Text>
-            <Text>- Raio X: 15/02/2024</Text>
+            <Text>- Nutricionista: 01/01/2024</Text>
+            <Text>- Psicólogo: 15/02/2024</Text>
           </Box>
 
           {/* Serviços de Interesse */}

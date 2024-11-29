@@ -7,15 +7,15 @@ import { Titulo } from "../componentes/Titulo";
 export default function Consultas() {
   const { appointments } = useContext(AppContext);
 
-  // Separar as consultas futuras e passadas
   const upcomingAppointments = appointments.filter((app) => app.isFuture);
   const pastAppointments = appointments.filter((app) => !app.isFuture);
 
   return (
     <ScrollView p="5">
-      <Titulo color="blue.500" fontSize="2xl" mb={4}>Minhas Consultas</Titulo>
+      <Titulo color="blue.500" fontSize="2xl" mb={4}>
+        Minhas Consultas
+      </Titulo>
 
-      {/* Próximas Consultas */}
       <Titulo color="blue.500" fontSize="lg" alignSelf="flex-start" mb={2}>
         Próximas Consultas
       </Titulo>
@@ -32,13 +32,14 @@ export default function Consultas() {
         ))
       ) : (
         <Box>
-          <Titulo fontSize="sm" color="gray.500">Nenhuma consulta agendada.</Titulo>
+          <Titulo fontSize="sm" color="gray.500">
+            Nenhuma consulta agendada.
+          </Titulo>
         </Box>
       )}
 
       <Divider mt={5} />
 
-      {/* Consultas Passadas */}
       <Titulo color="blue.500" fontSize="lg" alignSelf="flex-start" mb={2}>
         Consultas Passadas
       </Titulo>
@@ -55,7 +56,9 @@ export default function Consultas() {
         ))
       ) : (
         <Box>
-          <Titulo fontSize="sm" color="gray.500">Nenhuma consulta realizada.</Titulo>
+          <Titulo fontSize="sm" color="gray.500">
+            Nenhuma consulta realizada.
+          </Titulo>
         </Box>
       )}
     </ScrollView>

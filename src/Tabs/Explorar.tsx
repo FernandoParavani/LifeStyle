@@ -4,27 +4,33 @@ import { VStack, Box, FormControl, Input, Button, Text } from "native-base";
 import CardConsulta from "./CardConsulta";
 import { Titulo } from "../componentes/Titulo";
 
+// Importação das imagens locais
+
+import Medico1 from "../assets/medico1.png";
+import Medico2 from "../assets/medico2.png";
+import Medico3 from "../assets/medico3.png";
+
 export default function Explorar({ navigation }: { navigation: any }) {
   const [specialty, setSpecialty] = useState(""); // Estado para especialidade
   const [location, setLocation] = useState(""); // Estado para localização
   const [services, setServices] = useState([
     {
       id: 1,
-      nome: "Dr. Juan",
+      nome: "Dr. Marcelo",
       especialidade: "Psicólogo",
       descricao: "Especialista em terapia cognitivo-comportamental.",
       localizacao: "São Paulo - SP",
       avaliacao: 4.8,
-      foto: "https://github.com/FernandoParavani.png",
+      foto: Medico1, // Substituído por imagem local
     },
     {
       id: 2,
-      nome: "Dr. Silva",
+      nome: "Dr. Silvia",
       especialidade: "Personal",
       descricao: "Experiência em odontologia estética e implantes dentários.",
       localizacao: "Rio de Janeiro - RJ",
       avaliacao: 4.7,
-      foto: "https://github.com/FernandoParavani.png",
+      foto: Medico2, // Substituído por imagem local
     },
     {
       id: 3,
@@ -33,7 +39,7 @@ export default function Explorar({ navigation }: { navigation: any }) {
       descricao: "Atua no diagnóstico e tratamento de doenças cardiovasculares.",
       localizacao: "Belo Horizonte - MG",
       avaliacao: 4.9,
-      foto: "https://github.com/FernandoParavani.png",
+      foto: Medico3, // Substituído por imagem local
     },
   ]);
 

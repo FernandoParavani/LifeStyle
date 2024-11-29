@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { VStack, Image, Box, Button, Text } from "native-base";
+import { VStack, Image, Box, Button, Text, useToast } from "native-base";
 import { TouchableOpacity } from "react-native";
 import Logo from "./assets/Logo.png";
 import { EntradaTexto } from "./componentes/EntradaTexto";
@@ -7,6 +7,35 @@ import { EntradaTexto } from "./componentes/EntradaTexto";
 export default function Login({ navigation }: { navigation: any }) {
   const [email, setEmail] = useState(""); // Estado para o email
   const [password, setPassword] = useState(""); // Estado para a senha
+  const toast = useToast(); // Toast para mensagens amigáveis
+
+  const handleLogin = () => {
+    // Validações antes de permitir o login
+    if (!email.trim()) {
+      toast.show({
+        description: "Por favor, insira seu email.",
+        bgColor: "red.500",
+      });
+      return;
+    }
+
+    if (!password.trim()) {
+      toast.show({
+        description: "Por favor, insira sua senha.",
+        bgColor: "red.500",
+      });
+      return;
+    }
+
+    // Simulação de login bem-sucedido
+    toast.show({
+      description: "Login realizado com sucesso!",
+      bgColor: "green.500",
+    });
+
+    // Navegar para a próxima tela
+    navigation.navigate("Tabs");
+  };
 
   return (
     <VStack flex={1} alignItems="center" justifyContent="center" px={5} bg="white">
@@ -37,7 +66,7 @@ export default function Login({ navigation }: { navigation: any }) {
 
       {/* Botão de login */}
       <Button
-        onPress={() => navigation.navigate("Tabs")}
+        onPress={handleLogin}
         w="100%"
         bg="blue.500"
         _text={{ color: "white" }}
